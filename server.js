@@ -6,10 +6,8 @@ console.log('yasss! Our first server!');
 
 const express = require('express');
 require('dotenv').config();
-let weatherData = require('./data/weather.json');
+let cityData = require('./data/weather.json');
 const cors = require('cors');
-
-console.log('another one');
 
 
 //once express is in we need to use it//
@@ -40,17 +38,19 @@ app.get('/', (request, response) => {
 
 app.get('/weather', (request, response, next) => {
 
+
+
+  let cityName = request.query.cityName;
+  let lat = Math.floor(request.query.lat);
+  let lon = Math.floor(request.query.lon);
+
   try {
+    let forecastData = cityData.find(city => city.city_name === cityName);
 
-    let searchQuery = request.query;
-    let lat = request.query.lat;
-    let lon = request.query.lon;
-
-    let forecastData = weatherData.find(cityObj => cityObj.city_name.toLowerCase() === searchQuery.toLowerCase());
-    let dataToSend = forecastData.data.map(details => new Forecast(details));
+    let dataToSend = forecastData.data.map(day => new Forecast(day));
     response.status(200).send(dataToSend);
 
-    console.log(dataToSend);
+
   } catch (error) {
     // if I have an error, this will create a new instance of the Error Object that lives in Express
     next(error);
@@ -59,9 +59,9 @@ app.get('/weather', (request, response, next) => {
 });
 
 class Forecast {
-  constructor(city) {
-    this.name = `Low of ${city.low_temp}, high of ${city.max_temp} with ${city.weather.description}`;
-    this.datetime = city.datetime;
+  constructor(dayObj) {
+    this.name = dayObj.weather.description;
+    this.datetime = dayObj.datetime;
 
   }
 

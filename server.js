@@ -31,6 +31,10 @@ const PORT = process.env.PORT || 3002;
 // the first argument is a URL in quotes,
 // the 2nd argument is a callback function
 
+app.get('/', (request, response) => {
+  console.log('This is showing up in my terminal!');
+  response.status(200).send('Welcome to my server');
+});
 
 
 

@@ -6,8 +6,8 @@ console.log('yasss! Our first server!');
 
 const express = require('express');
 require('dotenv').config();
-let cityData = require('./data/weather.json');
 const cors = require('cors');
+const axios = require('axios');
 
 
 //once express is in we need to use it//
@@ -36,21 +36,18 @@ app.get('/', (request, response) => {
 
 
 
-app.get('/weather', (request, response, next) => {
+app.get('/weather', async (request, response, next) => {
 
-
-
-  let cityName = request.query.cityName;
-  let lat = Math.floor(request.query.lat);
-  let lon = Math.floor(request.query.lon);
+  let lat = request.query.lat;
+  let lon = request.query.lon;
 
   try {
-    let forecastData = cityData.find(city => city.city_name === cityName);
+    let weatherUrl = `http://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.WEATHER_API_KEY}&lang=en&lat=${lat}&lon=${lon}&days=16`;
 
-    let dataToSend = forecastData.data.map(day => new Forecast(day));
-    response.status(200).send(dataToSend);
+    let weatherData = await axios.get(weatherUrl);
 
-
+    let parsedData = weatherData.data.data.map(day => new Forecast(day));
+    response.status(200).send(parsedData);
   } catch (error) {
     // if I have an error, this will create a new instance of the Error Object that lives in Express
     next(error);
@@ -60,7 +57,7 @@ app.get('/weather', (request, response, next) => {
 
 class Forecast {
   constructor(dayObj) {
-    this.name = dayObj.weather.description;
+    this.description = dayObj.weather.description;
     this.datetime = dayObj.datetime;
 
   }

@@ -1,7 +1,7 @@
 # city-explorer-api
 
 **Author**: Eric Kinuthia
-**Version**:1.0.4
+**Version**:1.0.5
 
 ## Overview
 
@@ -27,6 +27,14 @@ This server sends weather data to the client using REST.
 10-26-2022 10:44pm - Application now connects to both weather and movie data bases.
 
 10-27-2022 3:20pm - Modularized the back-end codebase
+
+10-28-2022 5:03pm - Implemented cache storage.
+
+## Credits and Collaborations
+
+Domaine Scully
+
+Monica Ramirez
 
 ## Name of Feature: Create a basic Express server
 
@@ -67,6 +75,16 @@ Start time: 2:40 pm
 Finish time: 3:20 pm
 
 Actual time needed to complete: 1hour
+
+## Name of feature: Create a cache to store data
+
+Estimate of time needed to complete: 1 hour
+
+Start time: 4:00 PM
+
+Finish time: 5:00 PM
+
+Actual time needed to complete: 49 minutes
 
 ## Web Request Response Cycle
 
